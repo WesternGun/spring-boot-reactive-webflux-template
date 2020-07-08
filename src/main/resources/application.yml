@@ -1,0 +1,31 @@
+spring:
+  application.name: SwaggerProblem
+  kafka:
+    bootstrap-servers: localhost:9092
+
+management:
+  health:
+    diskspace:
+      enabled: false
+  endpoint:
+    metrics.enabled: true
+    prometheus.enabled: true
+  endpoints:
+    web:
+      base-path: /_system/check
+      exposure:
+        include: info,health,loggers,metrics,prometheus
+      path-mapping:
+        health: /simple
+
+reactive:
+  feign:
+    logger:
+      enabled: true
+    metrics:
+      enabled: true
+
+logging:
+  level:
+    ROOT: WARN
+    com.example.template: TRACE

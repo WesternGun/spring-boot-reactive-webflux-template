@@ -1,0 +1,93 @@
+buildscript {
+    ext {
+        springBootVersion = "2.2.4.RELEASE"
+    }
+    repositories {
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version '2.2.6.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+apply plugin: "java"
+apply plugin: "idea"
+apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
+apply from: "./gradle/integration-test.gradle"
+repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/milestone" }
+    maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
+    maven { url "http://central.maven.org/maven2" }
+    maven { url 'https://jitpack.io' }
+}
+ext {
+    springCloudVersion = "Hoxton.RELEASE"
+    swaggerVersion = "3.0.0-SNAPSHOT"
+    reactiveFeignVersion = '2.0.0'
+}
+dependencies {
+    // lombok
+    compileOnly("org.projectlombok:lombok")
+    testCompileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
+    testAnnotationProcessor("org.projectlombok:lombok")
+
+
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    compile("org.springframework.integration:spring-integration-webflux")
+    testImplementation 'io.projectreactor:reactor-test'
+
+    compile("io.springfox:springfox-swagger2:${swaggerVersion}")
+    compile("io.springfox:springfox-spring-webflux:${swaggerVersion}")
+    compile("io.springfox:springfox-spring-integration-webflux:${swaggerVersion}")
+    compile("io.springfox:springfox-swagger-ui:${swaggerVersion}")
+
+    //FEIGN
+    implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
+    implementation "com.playtika.reactivefeign:feign-reactor-core:${reactiveFeignVersion}"
+    implementation "com.playtika.reactivefeign:feign-reactor-spring-configuration:${reactiveFeignVersion}"
+    implementation "com.playtika.reactivefeign:feign-reactor-webclient:${reactiveFeignVersion}"
+
+    //Prometheus
+    compile('io.micrometer:micrometer-registry-prometheus:latest.release')
+    compile('io.micrometer:micrometer-core:latest.release')
+
+    // Kafka
+    compile("org.springframework.kafka:spring-kafka")
+    compile('org.springframework.kafka:spring-kafka-test') {
+        exclude module: 'kafka_2.11'
+    }
+    compile 'org.apache.kafka:kafka-clients:2.4.0'
+    compile 'org.apache.kafka:kafka-clients:2.4.0:test'
+    compile 'org.apache.kafka:kafka_2.12:2.4.0'
+    compile 'org.apache.kafka:kafka_2.12:2.4.0:test'
+}
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+test {
+    useJUnitPlatform()
+}
+

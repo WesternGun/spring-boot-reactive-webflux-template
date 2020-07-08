@@ -1,0 +1,20 @@
+sourceSets {
+    itest {
+        java.srcDir file('src/itest/java')
+        resources.srcDir file('src/itest/resources')
+        compileClasspath += sourceSets.main.output + sourceSets.test.output
+        compileClasspath += configurations.testCompileClasspath
+        compileClasspath += configurations.testRuntimeClasspath
+        runtimeClasspath += output + compileClasspath + test.output
+        annotationProcessorPath += configurations.testAnnotationProcessor
+    }
+}
+
+task itest(type: Test) {
+    description = 'Runs the integration tests.'
+    group = 'verification'
+    testClassesDirs = sourceSets.itest.output.classesDirs
+    classpath = sourceSets.itest.runtimeClasspath
+    mustRunAfter test
+    useJUnitPlatform()
+}
