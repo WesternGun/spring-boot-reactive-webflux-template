@@ -47,8 +47,7 @@ public class OrderControllerITest {
             2020-07-08 19:26:36.505  INFO 13980 --- [    Test worker] c.e.template.services.MetricAspect       : Kafka event inc success! Event: null
             2020-07-08 19:26:36.767  INFO 13980 --- [     parallel-1] c.e.template.services.BusinessService    : Start processing order: Order(id=a09c349d-7ca9-4a01-a310-73b73af8c282, orderNumber=1)
             2020-07-08 19:26:36.776  INFO 13980 --- [     parallel-1] c.e.template.services.BusinessService    : Order -> Kafka event: KafkaEventMessage(id=a09c349d-7ca9-4a01-a310-73b73af8c282, orderNumber=1)
-            2020-07-08 19:26:36.789  INFO 13980 --- [     parallel-1] c.e.template.services.MetricService      : Kafka counter incremented!
-            2020-07-08 19:26:36.789  INFO 13980 --- [     parallel-1] c.e.template.services.MetricAspect       : Kafka event inc success! Event: KafkaEventMessage(id=a09c349d-7ca9-4a01-a310-73b73af8c282, orderNumber=1)
+            2020-07-08 19:26:36.789  INFO 13980 --- [     parallel-1] c.e.template.services.MetricService      : Kafka counter incremented! 2020-07-08 19:26:36.789  INFO 13980 --- [     parallel-1] c.e.template.services.MetricAspect       : Kafka event inc success! Event: KafkaEventMessage(id=a09c349d-7ca9-4a01-a310-73b73af8c282, orderNumber=1)
             2020-07-08 19:26:36.790 TRACE 13980 --- [     parallel-1] c.e.template.services.BusinessService    : Kafka message sent! KafkaEventMessage(id=a09c349d-7ca9-4a01-a310-73b73af8c282, orderNumber=1)
 
             org.mockito.exceptions.verification.TooManyActualInvocations:
