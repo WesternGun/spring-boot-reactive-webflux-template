@@ -58,6 +58,9 @@ public class OrderControllerITest {
             -> at com.example.template.services.MetricAspect.incKafkaCounter(MetricAspect.java:19)
             -> at com.example.template.services.MetricAspect.incKafkaCounter(MetricAspect.java:19)
          */
+
+        // to fix it, you need to use AOPTestUtils.getTargetObject(bean) to get real object while mocking.
+        // while you verify, you use the bean without change
     }
 
 }
