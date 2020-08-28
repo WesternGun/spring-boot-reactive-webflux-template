@@ -16,22 +16,18 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@Service
 @Slf4j
-@NoArgsConstructor
-public class PromotionTargetFileHandler {
+public class PromotionTargetFileHandlerMain {
     public static final String uploadingDir = String.join(File.separator,
             System.getProperty("user.dir"), "targets_csv");
-    private final File destDir = new File(uploadingDir);
+    private static final File destDir = new File(uploadingDir);
 
-    public Mono<String> saveParts(FilePart file) {
-        return Mono.just(file)
-                .zipWith(createFileDestination(file))
-                .flatMap(tuple -> writeFilePart(tuple.getT2(), tuple.getT1()));
 
+    public static void main(String[] args) {
+        createFileDestination("target.csv");
     }
 
-    public Mono<Path> createFileDestination(FilePart filePart) {
+    public static void createFileDestination(String filename) {
         if (!destDir.exists()) {
             try {
                 Files.createDirectory(Path.of(uploadingDir));
@@ -43,33 +39,16 @@ public class PromotionTargetFileHandler {
             }
         }
         String saveLocation = String.join(File.separator,
-                uploadingDir, filePart.filename()
+                uploadingDir, filename
         );
         File saveFile = new File(saveLocation);
         if (saveFile.exists()) saveFile.delete();
         try {
             saveFile.createNewFile();   // <--------------- here IOException
-            return Mono.just(saveFile.toPath());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private Mono<String> writeFilePart(Path path, FilePart filePart) {
-        if (log.isTraceEnabled()) {
-            filePart.content().map(dataBuffer -> {
-                byte[] bytes = new byte[dataBuffer.readableByteCount()];
-                dataBuffer.read(bytes);
-                DataBufferUtils.release(dataBuffer);
-                return new String(bytes, StandardCharsets.UTF_8);
-            })
-            .doOnNext(content -> log.trace("File name: {}, content: {}", filePart.filename(), content))
-            .subscribeOn(Schedulers.immediate())
-            .subscribe();
-        }
-        filePart.transferTo(path);
-        log.trace("File part saved to: " + path.getFileName());
-        return Mono.just(path.toAbsolutePath().toString());
-    }
 
 }

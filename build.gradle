@@ -42,10 +42,10 @@ ext {
 }
 dependencies {
     // lombok
-    compileOnly("org.projectlombok:lombok:1.18.0")
-    testCompileOnly("org.projectlombok:lombok:1.18.0")
-    annotationProcessor("org.projectlombok:lombok:1.18.0")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.0")
+    compileOnly("org.projectlombok:lombok")
+    testCompileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
+    testAnnotationProcessor("org.projectlombok:lombok")
 
 
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
